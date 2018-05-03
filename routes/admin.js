@@ -10,9 +10,11 @@ route.get('/login',(req,res,next)=>{
         if(user.password === req.query.password)
         {
             res.send({'status':true});
+            console.log({'status':true});
         }else
         {
             res.send({'status':false});
+            console.log({'status':false});
         }
     }).catch(e=>{
         res.send(e.message);

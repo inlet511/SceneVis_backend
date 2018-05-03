@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 
 const adminRouter = require('./routes/admin');
 const userRouter = require('./routes/user');
+const sceneRouter = require('./routes/scene');
 
 const app = express();
 
@@ -14,8 +15,8 @@ mongoose.Promise = global.Promise;
 app.use(bodyParser.json());
 
 //Routes
-app.use('/', adminRouter);
-app.use('/', userRouter);
+app.use('/admin/', adminRouter);
+app.use('/scene/', sceneRouter);
 
 //Error Handling
 app.use((err, req, res, next) => {

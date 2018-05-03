@@ -1,23 +1,5 @@
 const mongoose = require('mongoose');
 
-const prepareSchema = new mongoose.Schema({
-    TimeLimit:{
-        type:Number,
-        required:true
-    },
-    Score:{
-        type:Number,
-        default:0,
-        required:false
-    },
-    ActionsInvolved:{
-        type:
-    }
-});
-
-const stepSchema = new mongoose.Schema({
-
-});
 
 const sceneSchema = new mongoose.Schema({
     SceneName:{
@@ -38,7 +20,35 @@ const sceneSchema = new mongoose.Schema({
         type:Date,
         required:false
     },
-    Preparation:[prepareSchema]
+    Preparation:{
+        TimeLimit:{
+            type:Number,
+            default:300,
+            required:true
+        },
+        Score:{
+            type:Number,
+            default:0,
+            required:false
+        },
+        ActionsInvolved:[String],
+        Equipments:[String]
+    },
+    TaskFlow:[
+        {
+            Score:Number,
+            Order:String,
+            OrderAudio:String,
+            Report:String,
+            TimeLimit:Number,
+            Conditions:[
+                {
+                    Type:String,
+                    ItemNo:String
+                }
+            ]
+        }
+    ]
 });
 
 const SceneModel = mongoose.model('scenes',sceneSchema);

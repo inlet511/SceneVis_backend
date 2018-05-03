@@ -1,7 +1,18 @@
 const mongoose = require('mongoose');
 
 const prepareSchema = new mongoose.Schema({
-
+    TimeLimit:{
+        type:Number,
+        required:true
+    },
+    Score:{
+        type:Number,
+        default:0,
+        required:false
+    },
+    ActionsInvolved:{
+        type:
+    }
 });
 
 const stepSchema = new mongoose.Schema({
@@ -26,7 +37,8 @@ const sceneSchema = new mongoose.Schema({
     UpdateTime:{
         type:Date,
         required:false
-    }
+    },
+    Preparation:[prepareSchema]
 });
 
 const SceneModel = mongoose.model('scenes',sceneSchema);

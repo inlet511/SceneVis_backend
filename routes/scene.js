@@ -3,6 +3,14 @@ const sceneModel = require('../models/scene');
 
 const route = express.Router();
 
+
+//管理场景
+route.get('/admin',(req,res,next)=>{
+    sceneModel.find({}).then((scenes)=>{       
+        res.render("scene",{"data":scenes});
+    }).catch(next);
+});
+
 //获取所有Scene
 route.get('/',(req,res,next)=>{
     sceneModel.find({}).then((scenes)=>{
@@ -10,11 +18,12 @@ route.get('/',(req,res,next)=>{
     }).catch(next);
 });
 
-//创建新的Scene
+//创建操作
 route.post('/',(req,res,next)=>{
+    console.log("get post request:"+JSON.stringify(req.body));
     sceneModel.create({
-        SceneName:req.body.SceneName || '',
-        Description:req.body.Description || '',
+        SceneName:req.body.scenename || '',
+        Description:req.body.description || '',
         CreateTime:new Date().getTime(),
         UpdateTime:new Date().getTime(),
         Preparation:{},
@@ -34,6 +43,12 @@ route.put('/:id',(req,res,next)=>{
         sceneModel.findOne({_id:req.params.id}).then((scene)=>{
             res.send(scene);
         });
+    }).catch(next);
+});
+
+route.delete('/:id',(req,res,next)=>{
+    sceneModel.findOneAndRemove({_id:req.params.id}).then((scene)=>{
+        res.send(scene);
     }).catch(next);
 });
 

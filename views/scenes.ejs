@@ -103,11 +103,11 @@
             });
         });
 
-        var DeleteItem = function(id){
+        var DeleteItem = function (id) {
             $.ajax({
-                url:"/scene/"+id,
-                type:"DELETE",
-                success:function(res,status){
+                url: "/scene/" + id,
+                type: "DELETE",
+                success: function (res, status) {
                     window.location.reload();
                 }
             });

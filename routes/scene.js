@@ -8,14 +8,14 @@ const route = express.Router();
 //管理场景
 route.get('/admin',(req,res,next)=>{
     sceneModel.find({}).then((scenes)=>{       
-        res.render("scene",{"data":scenes});
+        res.render("scenes",{"data":scenes});
     }).catch(next);
 });
 
 //编辑一个场景
 route.get('/edit/:id',(req,res,next)=>{
     sceneModel.findById(req.params.id).then((scene)=>{
-        res.render("scene_Detail",{"scene":scene});
+        res.render("scene_edit",{"scene":scene});
     }).catch(next);
 });
 
@@ -29,7 +29,7 @@ route.get('/',(req,res,next)=>{
     }).catch(next);
 });
 
-//获取一个Scene
+//获取一个Scene的详情
 route.get('/:id',(req,res,next)=>{
     sceneModel.findById(req.params.id).then((result)=>{
         res.send(result);
@@ -38,12 +38,13 @@ route.get('/:id',(req,res,next)=>{
 
 //创建操作
 route.post('/',(req,res,next)=>{
-    console.log("Receive post request:"+JSON.stringify(req.body));
+    console.log(req.body);
     sceneModel.create({
         SceneName:req.body.scenename || '',
         Description:req.body.description || '',
         CreateTime:new Date().getTime(),
         UpdateTime:new Date().getTime(),
+        BeginAudio:req.body.beginaudio || '',
         Preparation:{},
         TaskFlow:[]
     }).then((scene)=>{
@@ -56,7 +57,8 @@ route.put('/:id',(req,res,next)=>{
     sceneModel.findOneAndUpdate({_id:req.params.id},{$set:{
         SceneName:req.body.SceneName || '',
         Description:req.body.Description || '',
-        UpdateTime:new Date().getTime()
+        UpdateTime:new Date().getTime(),
+        BeginAudio:req.body.BeginAudio || ''
     }}).then(()=>{
         sceneModel.findOne({_id:req.params.id}).then((scene)=>{
             res.send(scene);
@@ -76,10 +78,12 @@ route.delete('/:id',(req,res,next)=>{
 
 //更改Scene的Preparation信息
 route.put('/preparation/:id',(req,res,next)=>{
+    console.log(req.body);
     sceneModel.findByIdAndUpdate(req.params.id,{$set:{
-        Preparation:req.body
+        Preparation:req.body,
+        UpdateTime:new Date().getTime()
     }}).then(()=>{
-        console.log(req.body);
+        
         sceneModel.findById(req.params.id).then((scene)=>{
             res.send(scene);
         });
@@ -90,6 +94,8 @@ route.put('/preparation/:id',(req,res,next)=>{
 
 
 /*流程相关***********/
+
+
 
 //更改Scene的TaskFlow信息
 

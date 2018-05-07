@@ -29,7 +29,7 @@ const sceneSchema = new mongoose.Schema({
             default:300,
             required:true
         },
-        Score:{
+        ScoreWeight:{
             type:Number,
             default:0,
             required:false
@@ -39,7 +39,7 @@ const sceneSchema = new mongoose.Schema({
     },
     TaskFlow:[
         {
-            Score:Number,
+            ScoreWeight:Number,
             Order:String,
             OrderAudio:String,
             Report:String,

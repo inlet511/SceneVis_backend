@@ -19,9 +19,17 @@
     <div class="container">
 
         <h1 id="test">编辑场景</h1>
-        <p class="lead">
-            <%=scene.SceneName%>
-        </p>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/scene/admin">场景</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <%=scene.SceneName%>
+                </li>
+            </ol>
+        </nav>
+
 
         <hr/>
         <h2>基础信息</h2>
@@ -40,7 +48,7 @@
             <div class="mb-3">
                 <label for="address">场景描述</label>
                 <textarea type="text" class="form-control" id="description" name="description" placeholder="场景描述" rows=5 required="">
-                <%=scene.Description%>
+                    <%=scene.Description%>
                 </textarea>
                 <div class="invalid-feedback">
                     必须填写场景描述.
@@ -60,7 +68,10 @@
                 <label>提示语音(填写音频文件名称)</label>
                 <input class="form-control" type="text" id="beginAudio" value="<%=scene.BeginAudio%>">
             </div>
-            <button id="SubmitBasicInfo" type="button" class="btn btn-primary btn-lg btn-block">提交基础信息</button>
+            <button id="submitBasicInfo" type="button" class="btn btn-primary btn-lg btn-block">提交基础信息</button>
+
+
+
             <hr/>
             <h2>准备阶段信息</h2>
             <div class="mb-3">
@@ -68,8 +79,8 @@
                 <input class="form-control" id="prepare_timeLimit" type="text" value="<%=scene.Preparation.TimeLimit%>">
             </div>
             <div class="mb-3">
-                <label>分值</label>
-                <input class="form-control" id="prepare_score" type="text" value="<%=scene.Preparation.Score%>">
+                <label>分值权重</label>
+                <input class="form-control" id="prepare_score" type="text" value="<%=scene.Preparation.ScoreWeight%>">
             </div>
 
             <h3 name="actions">涉及到的操作</h3>
@@ -84,11 +95,40 @@
             </ul>
 
             <button id="SubmitPreparation" type="button" class="btn btn-primary btn-lg btn-block">提交准备阶段信息</button>
+
+            <hr/>
+            <h2>场景流程信息</h2>
+            <div class="mb-3">
+                <label>流程</label>
+                <input class="form-control" id="prepare_timeLimit" type="text" value="<%=scene.Preparation.TimeLimit%>">
+            </div>
         </form>
+
+
 
     </div>
     </div>
     <!-- /container -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">信息</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    操作成功！
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <input type="hidden" name="sceneID" id="sceneID" value="<%=scene._id%>">
 
@@ -96,24 +136,28 @@
     <script src="/js/lodash.js"></script>
 
     <script>
-
         var sceneID = $("#sceneID").val();
 
         $(document).ready(function () {
-            $("#SubmitPreparation").click(function(){
+            $("#SubmitPreparation").click(function () {
                 SubmitPreparation(sceneID);
+            });
+            $("#submitBasicInfo").click(function () {
+                SubmitBasicInfo(sceneID);
             });
         });
 
         //刷新涉及到的操作
-        var RefreshActionsInvoled = function (id) {
+        function RefreshActionsInvoled(id) {
             $.get("/scene/" + id, function (result) {
 
                 //防止和后端模板冲突
                 _.templateSettings.interpolate = /{{([\s\S]+?)}}/g;
 
                 var actions = result.Preparation.ActionsInvolved;
-                var compiled = _.template('<li class="list-group-item"><a href="#actions" onclick="DeleteAction(this)" class="badge badge-danger">X</a>&nbsp;&nbsp;<span>{{item}}</span></li>');
+                var compiled = _.template(
+                    '<li class="list-group-item"><a href="#actions" onclick="DeleteAction(this)" class="badge badge-danger">X</a>&nbsp;&nbsp;<span>{{item}}</span></li>'
+                );
 
                 //先清空
                 $("#actionsInvolved").html("");
@@ -121,56 +165,80 @@
                 //再逐个添加
                 for (let i = 0; i < actions.length; i++) {
                     $("#actionsInvolved").append(
-                        compiled({ 'item': actions[i] })
+                        compiled({
+                            'item': actions[i]
+                        })
                     );
                 }
             });
         };
-        
+
         //初始化涉及到的操作
         RefreshActionsInvoled(sceneID);
 
         //增加一个涉及到的操作
-        var AddAction = function () {
+        function AddAction() {
             var newActionStr = $("#addActionInvolved").val();
-            var item = '<li class="list-group-item"><a href="#actions" onclick="DeleteAction(this)" class="badge badge-danger">X</a>&nbsp;&nbsp;<span>' + newActionStr + '</span></li>'
+            var item =
+                '<li class="list-group-item"><a href="#actions" onclick="DeleteAction(this)" class="badge badge-danger">X</a>&nbsp;&nbsp;<span>' +
+                newActionStr + '</span></li>'
             $("#actionsInvolved").append(item);
             $("#addActionInvolved").val("");
         };
 
         //删除一个涉及到的操作(不真正提交数据库)
-        var DeleteAction = function (item) {
+        function DeleteAction(item) {
             $(item).parent().remove();
         };
 
+        //提交基本信息
+        function SubmitBasicInfo(id) {
+            var sceneName = $("#scenename").val();
+            var des = $("#description").val();
+            var beginaudio = $("#beginAudio").val();
+            $.ajax({
+                url: "/scene/" + id,
+                type: "PUT",
+                dataType: "text",
+                data: JSON.stringify({
+                    "SceneName": sceneName,
+                    "Description": des,
+                    "BeginAudio": beginaudio
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                success: function (res, status) {
+                    $("#exampleModal").modal('show');
+                }
+            });
+        };
+
         //提交准备
-        var SubmitPreparation = function (id) {
+        function SubmitPreparation(id) {
             var timeLimit = $("#prepare_timeLimit").val();
             var score = $("#prepare_score").val();
-            var jsonStr = '{"TimeLimit":'+timeLimit+',"Score":'+score+',"ActionsInvolved":[]}';
-            var obj = JSON.parse(jsonStr);
+            var actions = [];
 
-            for(let i =0,count=$("#actionsInvolved").children().length; i< count; i++)
-            {                
-                obj['ActionsInvolved'].push($("#actionsInvolved li:eq("+i+") span").html());
-                // actionsStr+=$("#actionsInvolved li:eq("+i+") span").html();
-                // if(i!=count)
-                // actionsStr+=","              
-            } 
-            jsonStr = JSON.stringify(obj);
-            
+            for (let i = 0, count = $("#actionsInvolved").children().length; i < count; i++) {
+                actions.push($("#actionsInvolved li:eq(" + i + ") span").html());
+            }
 
             $.ajax({
                 url: "/scene/preparation/" + id,
+                type: "PUT",
                 dataType: "text",
                 data: JSON.stringify({
-                    "TimeLimit":300,
-                    "Score":0,
-                    "ActionsInvolved":["AAAA","BBBB","CCCC"]
+                    "TimeLimit": timeLimit,
+                    "ScoreWeight": score,
+                    "ActionsInvolved": actions
                 }),
-                type: "PUT",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 success: function (res, status) {
-                    console.log(res);
+                    RefreshActionsInvoled(sceneID);
+                    $("#exampleModal").modal('show');
                 }
             })
         };

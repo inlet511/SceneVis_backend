@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/grid.css" rel="stylesheet">
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <title>编辑场景-
+        <%=scene.SceneName%>
+    </title>
+</head>
+
+<body>
+
+
+    <div class="container">
+
+        <h1 id="test">编辑场景</h1>
+        <p class="lead">
+            <%=scene.SceneName%>
+        </p>
+
+        <hr/>
+        <h2>基础信息</h2>
+        <form class="needs-validation" novalidate="">
+
+            <div class="mb-3">
+                <label for="username">场景名称</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="scenename" name="scenename" placeholder="场景名称" value="<%=scene.SceneName%>" required="">
+                    <div class="invalid-feedback" style="width: 100%;">
+                        必须填写场景名称.
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="address">场景描述</label>
+                <textarea type="text" class="form-control" id="description" name="description" placeholder="场景描述" rows=5 required="">
+                <%=scene.Description%>
+                </textarea>
+                <div class="invalid-feedback">
+                    必须填写场景描述.
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label>创建时间(只读)</label>
+                <input class="form-control" type="text" id="createTime" value="<%=scene.CreateTime%>" readonly>
+            </div>
+            <div class="mb-3">
+                <label>修改时间(只读)</label>
+                <input class="form-control" type="text" id="updateTime" value="<%=scene.UpdateTime%>" readonly>
+            </div>
+
+            <div class="mb-3">
+                <label>提示语音(填写音频文件名称)</label>
+                <input class="form-control" type="text" id="beginAudio" value="<%=scene.BeginAudio%>">
+            </div>
+            <button id="SubmitBasicInfo" type="button" class="btn btn-primary btn-lg btn-block">提交基础信息</button>
+            <hr/>
+            <h2>准备阶段信息</h2>
+            <div class="mb-3">
+                <label>时间限定(单位:秒)</label>
+                <input class="form-control" id="prepare_timeLimit" type="text" value="<%=scene.Preparation.TimeLimit%>">
+            </div>
+            <div class="mb-3">
+                <label>分值</label>
+                <input class="form-control" id="prepare_score" type="text" value="<%=scene.Preparation.Score%>">
+            </div>
+
+            <h3 name="actions">涉及到的操作</h3>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="addActionInvolved" placeholder="新增操作" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" id="addActionInvolvedButton" type="button" onclick="AddAction()">添加</button>
+                </div>
+            </div>
+            <ul class="list-group" id="actionsInvolved">
+
+            </ul>
+
+            <button id="SubmitPreparation" type="button" class="btn btn-primary btn-lg btn-block">提交准备阶段信息</button>
+        </form>
+
+    </div>
+    </div>
+    <!-- /container -->
+
+    <input type="hidden" name="sceneID" id="sceneID" value="<%=scene._id%>">
+
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/lodash.js"></script>
+
+    <script>
+
+        var sceneID = $("#sceneID").val();
+
+        $(document).ready(function () {
+            $("#SubmitPreparation").click(function(){
+                SubmitPreparation(sceneID);
+            });
+        });
+
+        //刷新涉及到的操作
+        var RefreshActionsInvoled = function (id) {
+            $.get("/scene/" + id, function (result) {
+
+                //防止和后端模板冲突
+                _.templateSettings.interpolate = /{{([\s\S]+?)}}/g;
+
+                var actions = result.Preparation.ActionsInvolved;
+                var compiled = _.template('<li class="list-group-item"><a href="#actions" onclick="DeleteAction(this)" class="badge badge-danger">X</a>&nbsp;&nbsp;<span>{{item}}</span></li>');
+
+                //先清空
+                $("#actionsInvolved").html("");
+
+                //再逐个添加
+                for (let i = 0; i < actions.length; i++) {
+                    $("#actionsInvolved").append(
+                        compiled({ 'item': actions[i] })
+                    );
+                }
+            });
+        };
+        
+        //初始化涉及到的操作
+        RefreshActionsInvoled(sceneID);
+
+        //增加一个涉及到的操作
+        var AddAction = function () {
+            var newActionStr = $("#addActionInvolved").val();
+            var item = '<li class="list-group-item"><a href="#actions" onclick="DeleteAction(this)" class="badge badge-danger">X</a>&nbsp;&nbsp;<span>' + newActionStr + '</span></li>'
+            $("#actionsInvolved").append(item);
+            $("#addActionInvolved").val("");
+        };
+
+        //删除一个涉及到的操作(不真正提交数据库)
+        var DeleteAction = function (item) {
+            $(item).parent().remove();
+        };
+
+        //提交准备
+        var SubmitPreparation = function (id) {
+            var timeLimit = $("#prepare_timeLimit").val();
+            var score = $("#prepare_score").val();
+            var jsonStr = '{"TimeLimit":'+timeLimit+',"Score":'+score+',"ActionsInvolved":[]}';
+            var obj = JSON.parse(jsonStr);
+
+            for(let i =0,count=$("#actionsInvolved").children().length; i< count; i++)
+            {                
+                obj['ActionsInvolved'].push($("#actionsInvolved li:eq("+i+") span").html());
+                // actionsStr+=$("#actionsInvolved li:eq("+i+") span").html();
+                // if(i!=count)
+                // actionsStr+=","              
+            } 
+            jsonStr = JSON.stringify(obj);
+            
+
+            $.ajax({
+                url: "/scene/preparation/" + id,
+                dataType: "text",
+                data: JSON.stringify({
+                    "TimeLimit":300,
+                    "Score":0,
+                    "ActionsInvolved":["AAAA","BBBB","CCCC"]
+                }),
+                type: "PUT",
+                success: function (res, status) {
+                    console.log(res);
+                }
+            })
+        };
+
+
+
+
+
+        //Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function () {
+            'use strict';
+
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('click', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+</body>
+
+</html>

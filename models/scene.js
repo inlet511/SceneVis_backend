@@ -20,6 +20,9 @@ const sceneSchema = new mongoose.Schema({
         type:Date,
         required:false
     },
+    BeginAudio:{
+        type:String
+    },
     Preparation:{
         TimeLimit:{
             type:Number,
@@ -32,7 +35,7 @@ const sceneSchema = new mongoose.Schema({
             required:false
         },
         ActionsInvolved:[String],
-        Equipments:[String]
+        Tools:[String]
     },
     TaskFlow:[
         {

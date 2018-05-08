@@ -6,16 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/grid.css" rel="stylesheet">
+    <!-- <link href="/css/grid.css" rel="stylesheet"> -->
     <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+
     <title>编辑场景-
         <%=scene.SceneName%>
     </title>
 </head>
 
 <body>
-
-
     <div class="container">
 
         <h1 id="test">编辑场景</h1>
@@ -29,6 +29,8 @@
                 </li>
             </ol>
         </nav>
+
+
 
 
         <hr/>
@@ -69,11 +71,13 @@
                 <input class="form-control" type="text" id="beginAudio" value="<%=scene.BeginAudio%>">
             </div>
             <button id="submitBasicInfo" type="button" class="btn btn-primary btn-lg btn-block">提交基础信息</button>
+        </form>
 
 
 
-            <hr/>
-            <h2>准备阶段信息</h2>
+        <hr/>
+        <h2>准备阶段信息</h2>
+        <form class="needs-validation" novalidate="">
             <div class="mb-3">
                 <label>时间限定(单位:秒)</label>
                 <input class="form-control" id="prepare_timeLimit" type="text" value="<%=scene.Preparation.TimeLimit%>">
@@ -95,18 +99,159 @@
             </ul>
 
             <button id="SubmitPreparation" type="button" class="btn btn-primary btn-lg btn-block">提交准备阶段信息</button>
-
-            <hr/>
-            <h2>场景流程信息</h2>
-            <div class="mb-3">
-                <label>流程</label>
-                <input class="form-control" id="prepare_timeLimit" type="text" value="<%=scene.Preparation.TimeLimit%>">
-            </div>
         </form>
 
 
 
+
+        <hr/>
+        <h2>场景流程信息</h2>
+        <form class="needs-validation" novalidate="">
+            <!-- 新增场景按钮 -->
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="输入该流程的指令，用于代表该流程" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button">新增流程</button>
+                </div>
+            </div>
+            <!-- 流程开始 -->
+            <div class="accordion" id="accordion">
+                
+                <div class="card">
+                    <div class="card-header" id="heading1">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                                指令1
+                            </button>
+                        </h5>
+                    </div>
+
+                    <div id="collapse1" class="collapse" aria-labelledby="heading1" data-parent="#accordion">
+                        <div class="card-body">
+ 
+                            <div class="mb-3">
+                                <label>分值权重</label>
+                                <input class="form-control" id="tf_scoreweight" type="text" value="<%=scene.TaskFlow.ScoreWeight%>">
+                            </div>
+
+                            <div class="mb-3">
+                                <label>指令</label>
+                                <input class="form-control" id="tf_order" type="text" value="<%=scene.TaskFlow.Order%>">
+                            </div>
+
+                            <div class="mb-3">
+                                <label>指令音频</label>
+                                <input class="form-control" id="tf_orderaudio" type="text" value="<%=scene.TaskFlow.OrderAudio%>">
+                            </div>
+
+                            <div class="mb-3">
+                                <label>汇报</label>
+                                <input class="form-control" id="tf_report" type="text" value="<%=scene.TaskFlow.Report%>">
+                            </div>
+
+                            <div class="mb-3">
+                                <label>时间限定(秒)</label>
+                                <input class="form-control" id="tf_timelimit" type="text" value="<%=scene.TaskFlow.TimeLimit%>">
+                            </div>
+
+                            <div class="mb-3">
+                                <label>新增条件</label>
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-5">
+                                        <label for="inputState">条件类型</label>
+                                        <select class="form-control" id="exampleFormControlSelect1">
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-5">
+                                        <label for="inputCity">对象ID</label>
+                                        <input type="text" class="form-control" id="inputCity">
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for="inputCity">操作</label>
+                                        <button type="button" class="btn btn-success form-control">添加条件</button>
+                                    </div>
+                                </div>
+                                <label>条件列表</label>
+                                <div class="form-row">
+                                    <div class="col-md-5">
+                                        <select class="form-control" id="exampleFormControlSelect1">
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                        </select>
+                                    </div>
+                                    <div class=" col-md-5">
+                                        <input type="text" class="form-control" id="inputCity">
+                                    </div>
+                                    <div class=" col-md-2">
+
+                                        <button type="button" class="btn btn-danger form-control">删除</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="heading2">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse2" aria-expanded="false"
+                                aria-controls="collapse2">
+                                指令2
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapse2" class="collapse" aria-labelledby="heading2" data-parent="#accordion">
+                        <div class="card-body">
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute,
+                            non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf
+                            moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch
+                            et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                            Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic
+                            synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="heading3">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse3" aria-expanded="false"
+                                aria-controls="collapse3">
+                                指令3
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapse3" class="collapse" aria-labelledby="heading3" data-parent="#accordion">
+                        <div class="card-body">
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute,
+                            non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf
+                            moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch
+                            et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                            Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic
+                            synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 流程结束 -->
+
+
+            <button id="SubmitTaskFlow" type="button" class="btn btn-primary btn-lg btn-block">提交流程信息</button>
+        </form>
+
+
     </div>
+
+
     </div>
     <!-- /container -->
 
@@ -139,13 +284,39 @@
         var sceneID = $("#sceneID").val();
 
         $(document).ready(function () {
-            $("#SubmitPreparation").click(function () {
-                SubmitPreparation(sceneID);
-            });
             $("#submitBasicInfo").click(function () {
                 SubmitBasicInfo(sceneID);
             });
+            $("#SubmitPreparation").click(function () {
+                SubmitPreparation(sceneID);
+            });
+            $("#SubmitTaskFlow").click(function () {
+
+            });
         });
+
+        //提交基本信息
+        function SubmitBasicInfo(id) {
+            var sceneName = $("#scenename").val();
+            var des = $("#description").val();
+            var beginaudio = $("#beginAudio").val();
+            $.ajax({
+                url: "/scene/" + id,
+                type: "PUT",
+                dataType: "text",
+                data: JSON.stringify({
+                    "SceneName": sceneName,
+                    "Description": des,
+                    "BeginAudio": beginaudio
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                success: function (res, status) {
+                    $("#exampleModal").modal('show');
+                }
+            });
+        };
 
         //刷新涉及到的操作
         function RefreshActionsInvoled(id) {
@@ -191,29 +362,6 @@
             $(item).parent().remove();
         };
 
-        //提交基本信息
-        function SubmitBasicInfo(id) {
-            var sceneName = $("#scenename").val();
-            var des = $("#description").val();
-            var beginaudio = $("#beginAudio").val();
-            $.ajax({
-                url: "/scene/" + id,
-                type: "PUT",
-                dataType: "text",
-                data: JSON.stringify({
-                    "SceneName": sceneName,
-                    "Description": des,
-                    "BeginAudio": beginaudio
-                }),
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                success: function (res, status) {
-                    $("#exampleModal").modal('show');
-                }
-            });
-        };
-
         //提交准备
         function SubmitPreparation(id) {
             var timeLimit = $("#prepare_timeLimit").val();
@@ -241,6 +389,131 @@
                     $("#exampleModal").modal('show');
                 }
             })
+        };
+
+        //刷新所有流程
+        function RefreshAllWorkFlow(id){
+            $.get("/scene/" + id, function (result){
+                //防止和后端模板冲突
+                _.templateSettings.interpolate = /{{([\s\S]+?)}}/g;
+
+                var taskflows = result.TaskFlow;
+
+                var rawString = 
+                '<div class="card" id="card{{index}}">'+
+                    '<div class="card-header" id="heading{{index}}">'+
+                        '<h5 class="mb-0">'+
+                            '<a href="#flow{{index}}" class="badge badge-success" id="moveUp">▲</a>&nbsp;&nbsp;<a href="#flow{{index}}" class="badge badge-success" id="moveDown">▼</a>'+
+                            '<button class="btn btn-link" type="button" name="flow{{index}}" data-toggle="collapse" data-target="#collapse{{index}}" aria-expanded="false" aria-controls="collapse{{index}}">'+
+                                '{{taskflow.Order}}'+
+                            '</button>'+
+                        '</h5>'+
+                    '</div>'+
+                    '<div id="collapse{{index}}" class="collapse" aria-labelledby="heading{{index}}" data-parent="#accordion">'+
+                        '<div class="card-body">'+
+                            '<div class="mb-3">'+
+                                '<label>分值权重</label>'+
+                                '<input class="form-control" id="tf_scoreweight" type="text" value="{{taskflow.ScoreWeight}}">'+
+                            '</div>'+
+                            '<div class="mb-3">'+
+                                '<label>指令</label>'+
+                                '<input class="form-control" id="tf_order" type="text" value="{{taskflow.Order}}">'+
+                            '</div>'+
+                            '<div class="mb-3">'+
+                                '<label>指令音频</label>'+
+                                '<input class="form-control" id="tf_orderaudio" type="text" value="{{taskflow.OrderAudio}}">'+
+                            '</div>'+
+                            '<div class="mb-3">'+
+                                '<label>汇报</label>'+
+                                '<input class="form-control" id="tf_report" type="text" value="{{taskflow.Report}}">'+
+                            '</div>'+
+                            '<div class="mb-3">'+
+                                '<label>时间限定(秒)</label>'+
+                                '<input class="form-control" id="tf_timelimit" type="text" value="{{taskflow.TimeLimit}}">'+
+                            '</div>'+
+                            '<div class="mb-3">'+
+                                '<label>新增条件</label>'+
+                                '<div class="form-row">'+
+                                    '<div class="form-group col-md-5">'+
+                                        '<label for="inputState">条件类型</label>'+
+                                        '<select class="form-control" id="exampleFormControlSelect1">'+
+                                            '<option>检查泵的状态</option>'+
+                                            '<option>确认阀门关闭</option>'+
+                                            '<option>关闭阀门</option>'+
+                                            '<option>开启阀门</option>'+
+                                            '<option>解锁阀门</option>'+
+                                            '<option>就地缓慢开启阀门</option>'+
+                                            '<option>确认泵正常运行</option>'+
+                                            '<option>汇报</option>'+
+                                        '</select>'+
+                                    '</div>'+
+                                    '<div class="form-group col-md-5">'+                        
+                                        '<label for="inputID">对象ID</label>'+
+                                        '<input type="text" class="form-control" id="inputID">'+
+                                    '</div>'+
+                                    '<div class="form-group col-md-2">'+
+                                        '<label for="inputID">操作</label>'+
+                                        '<button type="button" class="btn btn-success form-control">添加条件</button>'+
+                                    '</div>'+
+                                '</div>'+
+                                '<label>条件列表</label>'+
+                                '<div class="form-row">'+
+                                    '<div class="col-md-5">'+
+                                        '<select class="form-control" id="exampleFormControlSelect1">'+
+                                            '<option>检查泵的状态</option>'+
+                                            '<option>确认阀门关闭</option>'+
+                                            '<option>关闭阀门</option>'+
+                                            '<option>开启阀门</option>'+
+                                            '<option>解锁阀门</option>'+
+                                            '<option>就地缓慢开启阀门</option>'+
+                                            '<option>确认泵正常运行</option>'+
+                                            '<option>汇报</option>'+
+                                        '</select>'+
+                                    '</div>'+
+                                    '<div class=" col-md-5">'+
+                                        '<input type="text" class="form-control" id="inputID"></input>'+
+                                    '</div>'+
+                                    '<div class=" col-md-2">'+
+                                        '<button type="button" class="btn btn-danger form-control">删除</button>'+
+                                    '</div>'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'+
+                '</div>';
+                var compiled = _.template(rawString);
+
+                //先清空内容
+                $("#accordion").html("");
+                for(let i=0;i<taskflows.length;i++)
+                {
+                    $("#accordion").append(
+                        compiled({
+                            index:i,
+                            taskflow:taskflows[i]
+                        })
+                    );
+                }
+
+            });
+        };
+
+        RefreshAllWorkFlow(sceneID);
+
+        //添加流程
+        function AddWorkFlow(order) {
+
+           // $("#accordion").append("")
+        };
+
+        //提交流程
+        function SubmitTaskFlow(id) {
+            var scoreWeight = $("#tf_scoreweight").val();
+            var order = $("#tf_order").val();
+            var orderAudio = $("#tf_orderaudio").val();
+            var report = $("#tf_report").val();
+            var timeLimit = $("#tf_timelimit").val();
+
         };
 
 

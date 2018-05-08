@@ -82,13 +82,25 @@ route.put('/preparation/:id',(req,res,next)=>{
     sceneModel.findByIdAndUpdate(req.params.id,{$set:{
         Preparation:req.body,
         UpdateTime:new Date().getTime()
-    }}).then(()=>{
-        
+    }}).then(()=>{        
         sceneModel.findById(req.params.id).then((scene)=>{
             res.send(scene);
         });
     }).catch(next);
 });
+
+//添加一个场景流程
+route.post('/taskflow/:id',(req,res,next)=>{
+    console.log(req.body);
+
+    sceneModel.findByIdAndUpdate(req.params.id,{$set:{
+        // TaskFlow:[
+
+        // ]
+    }})
+});
+
+//编辑一个场景流程
 
 
 

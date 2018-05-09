@@ -89,20 +89,16 @@ route.put('/preparation/:id',(req,res,next)=>{
     }).catch(next);
 });
 
-//添加一个场景流程
-route.post('/taskflow/:id',(req,res,next)=>{
+//保存场景流程
+route.put('/taskflow/:id',(req,res,next)=>{
     console.log(req.body);
 
     sceneModel.findByIdAndUpdate(req.params.id,{$set:{
-        // TaskFlow:[
-
-        // ]
-    }})
+        TaskFlow:req.body
+    }}).then(()=>{
+        res.send({status:"Success"});
+    }).catch(next);
 });
-
-//编辑一个场景流程
-
-
 
 
 /*流程相关***********/

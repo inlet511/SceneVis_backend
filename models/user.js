@@ -12,10 +12,6 @@ const userSchema = new mongoose.Schema({
         trim:true,
         default:"男"
     },
-    age:{
-        type:Number,
-        required:false        
-    },
     employeeID:{
         type:String,
         required:false

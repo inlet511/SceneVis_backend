@@ -34,11 +34,10 @@ route.get('/:id',(req,res,next)=>{
     sceneModel.findById(req.params.id).then((result)=>{
         res.send(result);
     }).catch(next);
-})
+});
 
 //创建操作
 route.post('/',(req,res,next)=>{
-    console.log(req.body);
     sceneModel.create({
         SceneName:req.body.scenename || '',
         Description:req.body.description || '',
@@ -78,7 +77,6 @@ route.delete('/:id',(req,res,next)=>{
 
 //更改Scene的Preparation信息
 route.put('/preparation/:id',(req,res,next)=>{
-    console.log(req.body);
     sceneModel.findByIdAndUpdate(req.params.id,{$set:{
         Preparation:req.body,
         UpdateTime:new Date().getTime()
@@ -89,20 +87,15 @@ route.put('/preparation/:id',(req,res,next)=>{
     }).catch(next);
 });
 
+/*流程相关***********/
 //保存场景流程
 route.put('/taskflow/:id',(req,res,next)=>{
-    console.log(req.body);
-
     sceneModel.findByIdAndUpdate(req.params.id,{$set:{
         TaskFlow:req.body
     }}).then(()=>{
         res.send({status:"Success"});
     }).catch(next);
 });
-
-
-/*流程相关***********/
-
 
 
 //更改Scene的TaskFlow信息

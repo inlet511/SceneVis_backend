@@ -25,6 +25,7 @@ app.use(express.static("./public"));
 
 //Routes
 app.use('/admin', adminRouter);
+app.use('/user', userRouter);
 app.use('/scene', sceneRouter);
 
 //Error Handling

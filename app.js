@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookie = require('cookie-parser');
 const session = require('express-session');
-const FileStore = require('session-file-store')(session);
+const MongoDBStore = require('connect-mongodb-session')(session);
 const adminRouter = require('./routes/admin');
 const userRouter = require('./routes/user');
 const sceneRouter = require('./routes/scene');
@@ -20,6 +20,19 @@ mongoose.Promise = global.Promise;
 app.set("view engine", "ejs");
 app.set("views", "views");
 
+var store = new MongoDBStore(
+    {
+        uri: 'mongodb://localhost:27017/connect_mongodb_session_test',
+        databaseName: 'connect_mongodb_session',
+        collection: 'mySessions'
+    });
+
+// Catch errors
+store.on('error', function (error) {
+    assert.ifError(error);
+    assert.ok(false);
+});
+
 //Middleware
 app.use(cookie());
 app.use(session({
@@ -27,7 +40,7 @@ app.use(session({
     cookie: { maxAge: 3600000 },
     resave: true,
     saveUninitialized: true,
-    store: new FileStore(),
+    store: store,
 }));
 
 app.use(bodyParser.json());
@@ -40,7 +53,7 @@ app.use('/admin', adminRouter);
 app.use('/user', userRouter);
 app.use('/scene', sceneRouter);
 
-//Error Handling
+// Error Handling
 app.use((err, req, res, next) => {
     return res.status(400).send({ error: err.message });
 });

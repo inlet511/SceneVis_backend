@@ -22,9 +22,7 @@ route.post('/login', (req, res, next) => {
             } else {
                 res.render("login", { loggedin: false });
             }
-        }).catch(e => {
-            res.send(e.message);
-        });
+        }).catch(next);
 });
 
 route.get('/logout', (req, res, next) => {
@@ -138,14 +136,14 @@ route.put('/user/:id', (req, res, next) => {
         userModel.findOne({ _id: req.params.id }).then((user) => {
             res.send(user);
         });
-    });
+    }).catch(next);
 });
 
 //删除学员
 route.delete('/user/:id', (req, res, next) => {
     userModel.findByIdAndRemove({ _id: req.params.id }).then((user) => {
         res.send(user);
-    });
+    }).catch(next);
 });
 
 module.exports = route;

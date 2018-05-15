@@ -6,32 +6,8 @@ const sceneModel = require('../models/scene');
 const route = express.Router();
 
 
-route.get('/', (req, res, next) => {
-    var loggedin = req.session.loggedin;
-    res.render("login",{"loggedin":loggedin});
-});
-
-route.post('/login', (req, res, next) => {
-    var username = req.body.username;
-    var password = req.body.password;
-    adminModel.findOne({ "username": username })
-        .then((user) => {
-            if (user.password === password) {
-                req.session.loggedin = true;
-                res.render("login", { loggedin: true });
-            } else {
-                res.render("login", { loggedin: false });
-            }
-        }).catch(next);
-});
-
-route.get('/logout', (req, res, next) => {
-    req.session.loggedin = false;
-    res.send("successfully logged out!");
-});
-
 //管理场景
-route.get('/scenes', (req, res, next) => {
+route.get('/sceneAdmin', (req, res, next) => {
     sceneModel.find({}).then((scenes) => {
         res.render("scenes", { "data": scenes });
     }).catch(next);
@@ -109,7 +85,7 @@ route.put('/scene/taskflow/:id', (req, res, next) => {
 
 
 //User
-route.get('/user/add', (req, res, next) => {
+route.get('/userAdmin', (req, res, next) => {
     userModel.find({}).then((users) => {
         res.render("user", { "users": users });
     }).catch(next);

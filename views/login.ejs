@@ -11,8 +11,13 @@
 </head>
 
 <body>
+
+    <%- include topbar %>
+    <div class="container-fluid">
+
     <% if(typeof loggedin === 'undefined' || loggedin!==true) {%>
-        <form class="form-signin" action="/admin/login" method="post">
+
+        <form class="form-signin" action="/login" method="post">
             <h1 class="h3 mb-3 font-weight-normal">请登录</h1>
             <label for="username" class="sr-only">用户名</label>
             <input type="text" id="username" name="username" class="form-control" placeholder="用户名" required autofocus>
@@ -22,9 +27,45 @@
             <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
         </form>
         <% }else{ %>
-            <button type="button" class="btn btn-primary btn-lg">用户管理</button>
-            <button type="button" class="btn btn-primary btn-lg">场景管理</button>
-            <% } %>
+        <main role="main">
+
+            <!-- Main jumbotron for a primary marketing message or call to action -->
+            <div class="jumbotron">
+                <div class="container">
+                    <h1 class="display-3">场景可视化管理界面</h1>
+                    <p>您已作为管理员登录，在这里您可以进行用户管理，场景管理，考核查询等系统管理操作。</p>
+
+                </div>
+            </div>
+
+            <div class="container">
+                <!-- Example row of columns -->
+                <div class="row">
+                    <div class="col-md-4">
+                        <p>
+                            <a class="btn btn-primary btn-lg" href="/admin/userAdmin" role="button">用户管理 &raquo;</a>
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <p>
+                            <a class="btn btn-primary btn-lg" href="/admin/sceneAdmin" role="button">场景管理 &raquo;</a>
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <p>
+                            <a class="btn btn-primary btn-lg" href="#" role="button">考核查询 &raquo;</a>
+                        </p>
+                    </div>
+                </div>
+
+                <hr>
+
+            </div>
+            <!-- /container -->
+
+        </main>
+        <% } %>
+    </div>
 </body>
 
 </html>

@@ -38,7 +38,7 @@ function SubmitBasicInfo(id) {
     var des = $("#description").val();
     var beginaudio = $("#beginAudio").val();
     $.ajax({
-        url: "/scene/" + id,
+        url: "/admin/scene/" + id,
         type: "PUT",
         dataType: "text",
         data: JSON.stringify({
@@ -110,7 +110,7 @@ function SubmitPreparation(id) {
     }
 
     $.ajax({
-        url: "/scene/preparation/" + id,
+        url: "/admin/scene/preparation/" + id,
         type: "PUT",
         dataType: "text",
         data: JSON.stringify({
@@ -337,7 +337,7 @@ function SubmitTaskFlow(id) {
         });
     });
     $.ajax({
-        url:"/scene/taskflow/"+id,
+        url:"/admin/scene/taskflow/"+id,
         type:"PUT",
         dataType: "text",
         data: JSON.stringify(tasks),

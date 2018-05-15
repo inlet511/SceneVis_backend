@@ -19,103 +19,114 @@
 </head>
 
 <body class="bg-light">
-
-    <div class="container">
-        <div class="py-5 text-center">
-            <h2>用户管理</h2>
-            <p class="lead">在这里您可以对用户进行新增，编辑，删除等操作。删除操作请务必谨慎。</p>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <h4 class="mb-3"> 添加学员</h4>
-                <form class="needs-validation" novalidate>
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label for="cc-name">姓名</label>
-                            <input type="text" class="form-control" id="studentname" placeholder="" required>
-                            <div class="invalid-feedback">
-                                必须填写学员姓名
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="state">性别</label>
-                            <select class="custom-select d-block w-100" id="gender" required="">
-                                <option>男</option>
-                                <option>女</option>
-                            </select>
-                            <div class="invalid-feedback">
-                                请选择性别
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="zip">学员编号</label>
-                            <input type="text" class="form-control" id="employeeID" placeholder="" required="">
-                            <div class="invalid-feedback">
-                                必须填写学员编号
-                            </div>
-                        </div>
-                    </div>
-
-                    <button class="btn btn-primary btn-lg btn-block" onclick="AddUser()">添加学员</button>
-                </form>
+    <%- include topbar %>
+        <div class="container">
+            <div class="py-5 text-center">
+                <h2>用户管理</h2>
+                <p class="lead">在这里您可以对用户进行新增，编辑，删除等操作。删除操作请务必谨慎。</p>
             </div>
-        </div>
+            <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                                <a href="/">主页</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                           用户管理
+                        </li>
 
+                    </ol>
+                </nav>
 
-        <h4 class="mb-3" name="studentList"> 学员列表</h4>
-        <hr/>
-        <% for(var i = 0; i< users.length;i++){ %>
             <div class="row">
-                <div class="col-md-3">
-                    <%=users[i].name %>
-                </div>
-                <div class="col-md-3">
-                    <%=users[i].gender %>
-                </div>
-                <div class="col-md-3">
-                    <%=users[i].employeeID %>
-                </div>
-                <div class="col-md-3">
-                    <a href="javascript:DeleteUser('<%=users[i]._id %>')">删除</a>
+                <div class="col-md-12">
+                    <h4 class="mb-3"> 添加学员</h4>
+                    <form class="needs-validation" novalidate>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="cc-name">姓名</label>
+                                <input type="text" class="form-control" id="studentname" placeholder="" required>
+                                <div class="invalid-feedback">
+                                    必须填写学员姓名
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="state">性别</label>
+                                <select class="custom-select d-block w-100" id="gender" required="">
+                                    <option>男</option>
+                                    <option>女</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    请选择性别
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="zip">学员编号</label>
+                                <input type="text" class="form-control" id="employeeID" placeholder="" required="">
+                                <div class="invalid-feedback">
+                                    必须填写学员编号
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary btn-lg btn-block" onclick="AddUser()">添加学员</button>
+                    </form>
                 </div>
             </div>
-            <% } %>
 
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">信息</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                操作成功！
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+
+            <h4 class="mb-3" name="studentList"> 学员列表</h4>
+            <hr/>
+            <% for(var i = 0; i< users.length;i++){ %>
+                <div class="row">
+                    <div class="col-md-3">
+                        <%=users[i].name %>
+                    </div>
+                    <div class="col-md-3">
+                        <%=users[i].gender %>
+                    </div>
+                    <div class="col-md-3">
+                        <%=users[i].employeeID %>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="javascript:DeleteUser('<%=users[i]._id %>')">删除</a>
+                    </div>
+                </div>
+                <% } %>
+
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">信息</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    操作成功！
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-    </div>
+        </div>
 
-    <!-- Bootstrap core JavaScript
+        <!-- Bootstrap core JavaScript
     ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script>
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script>
 
-        function AddUser(){
-            $.ajax({
-                    url: "/user",
+            function AddUser() {
+                $.ajax({
+                    url: "/admin/user",
                     type: "POST",
                     dataType: "text",
                     data: JSON.stringify({
                         "name": $('#studentname').val(),
                         "gender": $('#gender option:selected').text(),
-                        "employeeID":$('#employeeID').val()
+                        "employeeID": $('#employeeID').val()
                     }),
                     headers: {
                         'Content-Type': 'application/json'
@@ -125,43 +136,43 @@
                         //window.location.reload();
                     }
                 });
-        }
+            }
 
-        function DeleteUser(id) {
-            $.ajax({
-                url: '/user/' + id,
-                type: "DELETE",
-                dataType: "text",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                success: function (res, status) {
-                    window.location.reload();
-                }
-            });
-        }
-
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
-        (function () {
-            'use strict';
-
-            window.addEventListener('load', function () {
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                var forms = document.getElementsByClassName('needs-validation');
-
-                // Loop over them and prevent submission
-                var validation = Array.prototype.filter.call(forms, function (form) {
-                    form.addEventListener('submit', function (event) {
-                        if (form.checkValidity() === false) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-                        form.classList.add('was-validated');
-                    }, false);
+            function DeleteUser(id) {
+                $.ajax({
+                    url: '/admin/user/' + id,
+                    type: "DELETE",
+                    dataType: "text",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    success: function (res, status) {
+                        window.location.reload();
+                    }
                 });
-            }, false);
-        })();
-    </script>
+            }
+
+            // Example starter JavaScript for disabling form submissions if there are invalid fields
+            (function () {
+                'use strict';
+
+                window.addEventListener('load', function () {
+                    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                    var forms = document.getElementsByClassName('needs-validation');
+
+                    // Loop over them and prevent submission
+                    var validation = Array.prototype.filter.call(forms, function (form) {
+                        form.addEventListener('submit', function (event) {
+                            if (form.checkValidity() === false) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }
+                            form.classList.add('was-validated');
+                        }, false);
+                    });
+                }, false);
+            })();
+        </script>
 </body>
 
 </html>

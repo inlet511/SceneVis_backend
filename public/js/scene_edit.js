@@ -170,6 +170,14 @@ function RefreshAllWorkFlow(id){
                             '<input class="form-control" id="tf_report" type="text" value="'+taskflows[i].Report+'">'+
                         '</div>'+
                         '<div class="mb-3">'+
+                            '<label>错误汇报语句1</label>'+
+                            '<input class="form-control" id="tf_wrongreport1" type="text" value="'+taskflows[i].WrongReport1+'">'+
+                        '</div>'+
+                        '<div class="mb-3">'+
+                            '<label>错误汇报语句2</label>'+
+                            '<input class="form-control" id="tf_wrongreport2" type="text" value="'+taskflows[i].WrongReport2+'">'+
+                        '</div>'+
+                        '<div class="mb-3">'+
                             '<label>时间限定(秒)</label>'+
                             '<input class="form-control" id="tf_timelimit" type="text" value="'+taskflows[i].TimeLimit+'">'+
                         '</div>'+
@@ -255,6 +263,14 @@ function AddWorkFlow(button) {
                         '<input class="form-control" id="tf_report" type="text" value="">'+
                     '</div>'+
                     '<div class="mb-3">'+
+                        '<label>错误汇报1</label>'+
+                        '<input class="form-control" id="tf_wrongreport1" type="text" value="">'+
+                    '</div>'+
+                    '<div class="mb-3">'+
+                        '<label>错误汇报2</label>'+
+                        '<input class="form-control" id="tf_wrongreport2" type="text" value="">'+
+                    '</div>'+
+                    '<div class="mb-3">'+
                         '<label>时间限定(秒)</label>'+
                         '<input class="form-control" id="tf_timelimit" type="text" value="300">'+
                     '</div>'+
@@ -332,6 +348,8 @@ function SubmitTaskFlow(id) {
             Order:$(this).find("#tf_order").val(),
             OrderAudio:$(this).find("#tf_orderaudio").val(),
             Report:$(this).find("#tf_report").val(),
+            WrongReport1:$(this).find("#tf_wrongreport1").val(),
+            WrongReport2:$(this).find("#tf_wrongreport2").val(),
             TimeLimit:$(this).find("#tf_timelimit").val(),
             Conditions:conditions
         });

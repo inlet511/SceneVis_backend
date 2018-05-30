@@ -43,6 +43,8 @@ const sceneSchema = new mongoose.Schema({
             Order:String,
             OrderAudio:String,
             Report:String,
+            WrongReport1:String,
+            WrongReport2:String,
             TimeLimit:Number,
             Conditions:[
                 {

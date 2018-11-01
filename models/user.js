@@ -15,9 +15,6 @@ const userSchema = new mongoose.Schema({
     employeeID:{
         type:String,
         required:false
-    },
-    examID:{
-        type:[String]
     }
 });
 

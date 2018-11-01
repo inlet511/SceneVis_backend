@@ -8,6 +8,7 @@ const adminModel = require('./models/admin');
 const adminRouter = require('./routes/admin');
 const userRouter = require('./routes/user');
 const sceneRouter = require('./routes/scene');
+const examRouter = require('./routes/exam');
 
 const app = express();
 
@@ -90,6 +91,7 @@ app.use('/admin',(req,res,next)=>{
 app.use('/admin', adminRouter);
 app.use('/user', userRouter);
 app.use('/scene', sceneRouter);
+app.use('/exam', examRouter);
 
 // Error Handling
 app.use((err, req, res, next) => {

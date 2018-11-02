@@ -8,7 +8,7 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/grid.css" rel="stylesheet">
     <script src="/js/jquery-3.3.1.min.js"></script>
-    <title>成绩查询</title>
+    <title>所有考核成绩</title>
 </head>
 
 <body class="bg-light">
@@ -16,6 +16,8 @@
 
 
         <%- include topbar %>
+        <hr />
+        <button class="btn btn-primary btn-lg btn-block" onclick="javascript:window.location.href='exam/findByUser'">按姓名查询</button>
         <hr />
         <h2>考试成绩列表</h2>
         <div class="row">

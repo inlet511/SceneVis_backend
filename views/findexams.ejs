@@ -63,7 +63,7 @@
                 $.ajax({
                     url: "/exam/findByUser",
                     type: "post",
-                    dataType: "text",
+                    dataType: "json",
                     data: JSON.stringify({
                         "userName": $('#userName').val()
                     }),
@@ -72,16 +72,17 @@
                     },
                     success: function (res, status) {
                         $("#result").empty();
-                        var lines = [];
-                        for (var i = 0; i < res.length; i++) {
-                            $("result").append("<div class=\"row\"> <div class=\"col-md-3\"> " 
-                                + res[i].updateTime + " </div>" +
+                        console.log(res.exams.length);
+                        for (var i = 0; i < res.exams.length; i++) {
+                            $("#result").append("<div class=\"row\"> <div class=\"col-md-3\"> " 
+                                + res.exams[i].updateTime + " </div>" +
                                 "<div class=\"col-md-3\"> " +
-                                res[i].sceneID.SceneName
+                                    res.exams[i].sceneID.SceneName
                                 + " </div>  <div class=\"col-md-3\">" +
-                                res[i].userID.name
+                                    res.userName
                                 + " </div> <div class=\"col-md-3\"> " +
-                                res[i].score + "</div> </div>");
+                                    res.exams[i].score + "</div> </div>");
+
                         }
                     },
                     error:function(xhr,status,error){
